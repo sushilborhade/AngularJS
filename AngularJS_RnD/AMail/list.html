@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+  <tr>
+    <td><strong>Sender</strong></td>
+    <td><strong>Subject</strong></td>
+    <td><strong>Date</strong></td>
+  </tr>
+  <tr ng-repeat='message in messages'>
+    <td>{{message.sender}}</td>
+    <td><a ng-href='#/view/{{message.id}}'>{{message.subject}}</a></td>
+    <td>{{message.date}}</td>
+  </tr>
+</table>
+</body>
+</html>

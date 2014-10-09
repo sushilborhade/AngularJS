@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Filters...</title>
+<script type="text/javascript" src="../JS/angular.min.js"></script>
+<script type="text/javascript">
+function HomeController($scope){
+	$scope.pageHeading = 'behold the majesty of your page title';
+}
+
+var homeModule	=	angular.module('HomeModule', []);
+homeModule.filter('titleCase', function(){
+	var titleCaseFilter	=	function(input){
+		var words	=	input.split(' ');
+		for (var i = 0; i < words.length; i++) {
+			words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+		}
+		return words.join(' ');
+	};
+	return titleCaseFilter;
+});
+
+homeModule.filter('upperCase', function(){
+	var upperCaseFilter	=	function(input){
+		return input.toUpperCase();
+	};
+	return upperCaseFilter;
+});
+</script>
+</head>
+<body ng-app="HomeModule" ng-controller="HomeController">
+<h1>{{pageHeading | titleCase}}</h1>
+<h1>{{pageHeading | upperCase}}</h1>
+</body>
+</html>

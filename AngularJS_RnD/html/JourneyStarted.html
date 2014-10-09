@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Journey Started...</title>
+<!-- <link href="../css/Styles_Essent_2.css" rel="stylesheet" type="text/css" />-->
+<style type="text/css">
+.menu-disabled-true {
+	color: gray;
+}
+
+.menu-disabled-false {
+	color: black;
+}
+</style>
+<script type="text/javascript" src="../JS/angular.min.js"></script>
+<script type="text/javascript">
+	function TextController($scope) {
+		$scope.SomeText = "I have started my Journey...";
+	}
+
+	function StartUpController($scope) {
+		$scope.computeNeeded = function() {
+			$scope.needed = $scope.startingEstimate * 10;
+		};
+		$scope.requestFunding = function() {
+			window.alert("Sorry, please get more customers first.");
+		};
+
+		$scope.reset = function() {
+			$scope.startingEstimate = 0;
+		};
+	}
+
+	var students = [ {
+		name : 'Mary Contrary',
+		id : '1'
+	}, {
+		name : 'Jack Sprat',
+		id : '2'
+	}, {
+		name : 'Jill Hill',
+		id : '3'
+	}, ];
+
+	function StudentListController($scope) {
+		$scope.students = students;
+
+		$scope.insertTom = function() {
+			$scope.students.splice(1, 0, {
+				name : 'Tom Thumb',
+				id : '4'
+			});
+		}
+	}
+
+	function DeathrayMenuController($scope) {
+		/*$scope.menuState.show = false;*/
+		$scope.menuState = {
+			show : false
+		};
+		$scope.toggleMenu = function() {
+			$scope.menuState.show = !$scope.menuState.show;
+		};
+		$scope.stun = function() {
+			$scope.isDisabled = (($scope.isDisabled) == 'false' ? 'true'
+					: 'false');
+		};
+		$scope.disintegrate = function() {
+			alert("disintegrate");
+		};
+		$scope.erase = function() {
+			alert("erase");
+		};
+	}
+
+	function CartController($scope) {
+		$scope.bill = {};
+		$scope.items = [ {
+			title : 'Paint pots',
+			quantity : 8,
+			price : 3.95
+		}, {
+			title : 'Polka dots',
+			quantity : 17,
+			price : 12.95
+		}, {
+			title : 'Pebbles',
+			quantity : 5,
+			price : 6.95
+		} ];
+		$scope.totalCart = function() {
+			var total = 0;
+			for (var i = 0, len = $scope.items.length; i < len; i++) {
+				total = total + $scope.items[i].price
+						* $scope.items[i].quantity;
+			}
+			return total;
+		}
+		$scope.subtotal = function() {
+			return $scope.totalCart() - $scope.bill.discount;
+		};
+		function calculateDiscount(newValue, oldValue, scope) {
+			$scope.bill.discount = newValue > 100 ? 10 : 0;
+		}
+		$scope.$watch($scope.totalCart, calculateDiscount);
+	}
+</script>
+</head>
+<body ng-controller="TextController">
+	<p ng-bind="SomeText"></p>
+	<form ng-submit="requestFunding()" ng-controller="StartUpController">
+		Starting: <input ng-change="computeNeeded()"
+			ng-model="startingEstimate"> Recommendation: {{needed}}
+		<button>Fund my startup!</button>
+		<button ng-click="reset()">Reset</button>
+	</form>
+
+	<div ng-controller="StudentListController">
+		<ul>
+			<li ng-repeat='student in students'><a href="#">{{student.id}}
+					- {{student.name}}</a>
+		</ul>
+		<button ng-click="insertTom()">Insert</button>
+	</div>
+
+	<div ng-controller="DeathrayMenuController">
+		<button ng-click="toggleMenu()">Toggle Menu</button>
+		<ul ng-show="menuState.show">
+			<li class='menu-disabled-{{isDisabled}}' ng-click="stun()">Stun</li>
+			<li ng-click="disintegrate()">Disintegrate</li>
+			<li ng-click="erase()">Erase from history</li>
+		</ul>
+	</div>
+
+	<div ng-controller="CartController">
+		<div ng-repeat="item in items">
+			<span>{{item.title}}</span> <input ng-model="item.quantity">
+			<span>{{item.price | currency}}</span> <span>{{item.price *
+				item.quantity | currency}}</span>
+		</div>
+		<div>Total: {{totalCart() | currency}}</div>
+		<div>Discount: {{bill.discount | currency}}</div>
+		<div>Subtotal: {{subtotal() | currency}}</div>
+	</div>
+</body>
+</html>
