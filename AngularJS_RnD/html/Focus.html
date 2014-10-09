@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="app">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Focused...</title>
+<script type="text/javascript" src="../JS/angular.min.js"></script>
+<script type="text/javascript">
+	var appModule = angular.module('app', []);
+	appModule.directive('ngbkFocus', function() {
+		return {
+			link : function(scope, element, attrs, controller) {
+				element[0].focus();
+			}
+		};
+	});
+
+	function FocusController($scope) {
+		try {
+			$scope.message = {
+				text : 'nothing clicked yet'
+			};
+
+			$scope.notFocused = function() {
+				$scope.message.text = 'Unfocused button clicked...';
+			}
+
+			$scope.clickFocused = function() {
+				$scope.message.text = 'Focused button clicked...';
+			}
+		} catch (e) {
+			alert(e.message);
+		}
+	}
+</script>
+</head>
+<body ng-controller="FocusController">
+	<button ngbk-focus ng-click="notFocused()">Not Focused</button>
+	<button ng-click="clickFocused()">I am Focused</button>
+	<div>{{message.text}}</div>
+</body>
+</html>
